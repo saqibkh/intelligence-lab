@@ -30,6 +30,8 @@ else
     exit 1
 fi
 
+export PS1="\u@\h:\w\$ "
+
 echo "✅ Environment setup complete. Virtual environment is active."
 echo "💡 To activate it later: source venv/bin/activate"
 

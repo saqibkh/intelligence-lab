@@ -1,1 +1,3 @@
 venv
+data/captions/*.txt
+data/images/*.jpg
