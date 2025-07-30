@@ -1,0 +1,11 @@
+torch
+transformers
+diffusers
+xformers
+accelerate
+scipy
+safetensors
+datasets
+pillow
+peft
+argcomplete
