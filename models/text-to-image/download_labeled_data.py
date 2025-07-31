@@ -6,10 +6,10 @@ from io import BytesIO
 
 # Base this path relative to where the script is located
 SCRIPT_DIR = os.path.abspath(__file__) 
-BASE_DIR = SCRIPT_DIR.rsplit("intelligence-lab", 1)[0] + "intelligence-lab/data"
+BASE_DIR = os.path.dirname(SCRIPT_DIR)
 
-OUT_DIR_IMAGES = os.path.join(BASE_DIR, "images")
-OUT_DIR_CAPTIONS = os.path.join(BASE_DIR, "captions")
+OUT_DIR_IMAGES = os.path.join(BASE_DIR, "data/images")
+OUT_DIR_CAPTIONS = os.path.join(BASE_DIR, "data/captions")
 
 DATASET_NAME = "laion/laion400m"
 NUM_SAMPLES = 1

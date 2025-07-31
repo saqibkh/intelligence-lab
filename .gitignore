@@ -1,3 +1,6 @@
 venv
-data/captions/*.txt
-data/images/*.jpg
+
+models/text-to-image/stabilityai
+models/text-to-image/data
+models/text-to-image/data/captions/*.txt
+models/text-to-image/data/images/*.jpg

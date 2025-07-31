@@ -20,17 +20,19 @@ echo "⬆️  Upgrading pip..."
 pip install --upgrade pip
 
 # Install dependencies
-if [ -f "requirements.txt" ]; then
-    echo "📦 Installing dependencies from requirements.txt..."
-    pip install -r requirements.txt
+# Check for ROCm (AMD GPU)
+if [ -f /opt/rocm/.info/version ]; then
+    echo "📦 ROCm detected (AMD GPU). Installing ROCm-specific dependencies from requirements-amd.txt..."
+    pip install -r requirements-amd.txt
+    pip uninstall -y torch torchvision torchaudio
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2
     echo "✅ All packages installed."
 else
-    echo "❌ requirements.txt not found in the current directory."
-    deactivate
-    exit 1
+    echo "📦 ROCm not detected. Assuming NVIDIA GPU."
+    echo "Installing CUDA-specific dependencies from requirements-nvidia.txt..."
+    pip install -r requirements-nvidia.txt
+    echo "✅ All packages installed."
 fi
-
-export PS1="\u@\h:\w\$ "
 
 echo "✅ Environment setup complete. Virtual environment is active."
 echo "💡 To activate it later: source venv/bin/activate"

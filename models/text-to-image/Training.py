@@ -1,12 +1,13 @@
 import os
 import torch
-#from diffusers import StableDiffusionXLPipeline
+from diffusers import StableDiffusionXLPipeline, DiffusionPipeline, StableDiffusion3Pipeline
 from transformers import AutoTokenizer
 from peft import get_peft_model, LoraConfig, TaskType
 from PIL import Image
 from datasets import Dataset
 from accelerate import Accelerator
 from tqdm import tqdm
+from huggingface_hub import snapshot_download
 
 # ========== Configuration ==========
 BASE_MODEL = "stabilityai/stable-diffusion-3.5-large"
@@ -18,12 +19,11 @@ PROMPTS = [
 
 # Build path relative to this script (no matter the working directory)
 SCRIPT_PATH = os.path.abspath(__file__)
-LAB_ROOT = SCRIPT_PATH.split("intelligence-lab")[0] + "intelligence-lab"
-BASE_DIR = os.path.join(LAB_ROOT, "data")
-IMAGE_DIR = os.path.join(BASE_DIR, "images")
-CAPTION_DIR = os.path.join(BASE_DIR, "captions")
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
-FINETUNED_DIR = os.path.join(BASE_DIR, "finetuned")
+BASE_DIR = os.path.dirname(SCRIPT_PATH)
+IMAGE_DIR = os.path.join(BASE_DIR, "data/images")
+CAPTION_DIR = os.path.join(BASE_DIR, "data/captions")
+OUTPUT_DIR = os.path.join(BASE_DIR, "data/output")
+FINETUNED_DIR = os.path.join(BASE_DIR, "data/finetuned")
 
 for d in [IMAGE_DIR, CAPTION_DIR, OUTPUT_DIR, FINETUNED_DIR]:
     os.makedirs(d, exist_ok=True)
@@ -31,16 +31,61 @@ for d in [IMAGE_DIR, CAPTION_DIR, OUTPUT_DIR, FINETUNED_DIR]:
 # ROCm-compatible device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+########################################################################################
+#  These functions are for Stable Diffusion 3.5 Large
+#
+#
+def model_already_downloaded(model_dir: str) -> bool:
+    return os.path.exists(os.path.join(model_dir, "model_index.json"))
+
+def load_sd_3_5_pipeline(model_dir: str, device: str = "cuda" if torch.cuda.is_available() else "cpu"):
+    os.makedirs(model_dir, exist_ok=True)
+
+    # Download if not already present
+    if not model_already_downloaded(model_dir):
+        print(f"Downloading model: {BASE_MODEL} into {model_dir}")
+        snapshot_download(
+            repo_id=BASE_MODEL,
+            local_dir=model_dir,
+            local_dir_use_symlinks=False
+        )
+    else:
+        print(f"Model already exists in {model_dir}. Skipping download.")
+
+    # Load the pipeline
+    #pipe = DiffusionPipeline.from_pretrained(
+    pipe = StableDiffusion3Pipeline.from_pretrained(
+        model_dir,
+        torch_dtype=torch.float32,  # for AMD ROCm
+    ).to(device)
+
+    print("Stable Diffusion 3.5 pipeline loaded successfully.")
+    return pipe
+
+
+#
+#
+#
+########################################################################################
+
+
+
+
+
+
+
 # ========== 1. Load or Download Model ==========
 def load_pipeline(model_dir=BASE_MODEL, custom=False):
     print(f"🔄 Loading {'fine-tuned' if custom else 'base'} pipeline...")
-    from diffusers import StableDiffusionXLPipeline
-    pipe = StableDiffusionXLPipeline.from_pretrained(
-        model_dir,
-        torch_dtype=torch.float16,  # No fp16 on AMD/ROCm
-        use_safetensors=True,
-    ).to(device)
-    return pipe
+    if BASE_MODEL == "stabilityai/stable-diffusion-3.5-large":
+        return load_sd_3_5_pipeline(model_dir)
+    else:
+        pipe = StableDiffusionXLPipeline.from_pretrained(
+            model_dir,
+            torch_dtype=torch.float16,  # No fp16 on AMD/ROCm
+            use_safetensors=True,
+        ).to(device)
+        return pipe
 
 # ========== 2. Generate Images ==========
 def generate_images(pipe, prompts, out_folder):
