@@ -10,5 +10,6 @@ Step by step guide for text-to-image model refinement
 6. Upload the model to huggingface if training produces good results
 
 To RUN:
+sudo apt-get install python3-venv
 ./setup_env.sh && source venv/bin/activate
 
