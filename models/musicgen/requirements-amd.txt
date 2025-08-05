@@ -10,4 +10,4 @@ argcomplete
 requests
 protobuf
 sentencepiece
-
+pydub
