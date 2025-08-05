@@ -38,8 +38,8 @@ def generate_music(prompt: str, length: str = None):
     music = synthesiser(
             prompt, 
             forward_params={
-                "do_sample": True,
-                "max_new_tokens": 2048
+                "temperature": 0.7,
+                "do_sample": True
             }
     )
     
