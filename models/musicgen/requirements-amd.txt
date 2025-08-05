@@ -1,0 +1,13 @@
+transformers
+diffusers
+accelerate
+scipy
+safetensors
+datasets
+pillow
+peft
+argcomplete
+requests
+protobuf
+sentencepiece
+
