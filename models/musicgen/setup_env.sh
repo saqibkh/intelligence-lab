@@ -25,7 +25,7 @@ if [ -f /opt/rocm/.info/version ]; then
     echo "📦 ROCm detected (AMD GPU). Installing ROCm-specific dependencies from requirements-amd.txt..."
     pip install -r requirements-amd.txt
     pip uninstall -y torch torchvision torchaudio
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.3
     echo "✅ All packages installed."
 else
     echo "📦 ROCm not detected. Assuming NVIDIA GPU."
@@ -36,6 +36,3 @@ fi
 
 echo "✅ Environment setup complete. Virtual environment is active."
 echo "💡 To activate it later: source venv/bin/activate"
-
-~
-
