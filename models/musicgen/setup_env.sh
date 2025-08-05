@@ -23,6 +23,7 @@ pip install --upgrade pip
 # Check for ROCm (AMD GPU)
 if [ -f /opt/rocm/.info/version ]; then
     echo "📦 ROCm detected (AMD GPU). Installing ROCm-specific dependencies from requirements-amd.txt..."
+    sudo apt install ffmpeg
     pip install -r requirements-amd.txt
     pip uninstall -y torch torchvision torchaudio
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.3
