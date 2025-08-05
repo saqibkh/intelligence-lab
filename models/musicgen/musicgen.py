@@ -35,7 +35,13 @@ def generate_music(prompt: str, length: str = None):
     synthesiser = pipeline("text-to-audio", "facebook/musicgen-large")
     
     print(f"Generating music for prompt: '{prompt}'")
-    music = synthesiser(prompt, forward_params={"do_sample": True})
+    music = synthesiser(
+            prompt, 
+            forward_params={
+                "do_sample": True,
+                "max_new_tokens": 2048
+            }
+    )
     
     sampling_rate = music["sampling_rate"]
     audio = music["audio"]
