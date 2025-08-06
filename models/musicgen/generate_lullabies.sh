@@ -19,7 +19,7 @@ for PROMPT in "${PROMPTS[@]}"; do
     echo "Generating: $PROMPT"
 
     # Run your musicgen script
-    python3 musicgen.py "$PROMPT" --length 2m& 
+    python3 musicgen.py "$PROMPT" --length 1h 
 done
 
 echo "✅ All files generated in: $OUTPUT_DIR"
