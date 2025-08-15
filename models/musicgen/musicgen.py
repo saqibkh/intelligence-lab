@@ -73,7 +73,7 @@ def generate_music(prompt: str, length: str = None):
 def main():
     parser = argparse.ArgumentParser(description="Generate music from a text prompt using MusicGen.")
     parser.add_argument("prompt", type=str, help="Text prompt to generate music from.")
-    parser.add_argument("--length", type=str, default="30s",
+    parser.add_argument("--length", type=str, default=None,
                         help="Optional total duration (e.g. 30s, 2m, 1h).")
     
     args = parser.parse_args()
