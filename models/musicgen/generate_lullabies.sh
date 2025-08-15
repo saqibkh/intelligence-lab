@@ -5,13 +5,26 @@
 
 # Array of prompts (you can also read from a file if preferred)
 PROMPTS=(
-  "A gentle lullaby with soft piano, music box tones, and a slow, soothing melody. Calm and peaceful atmosphere, perfect for helping a baby fall asleep."
-  "A soft music box lullaby with delicate plucked notes and a dreamy, slow melody. Very gentle and calming, perfect for bedtime."
-  "A relaxing acoustic lullaby with fingerpicked guitar, soft humming, and a warm, comforting melody. Slow and peaceful, ideal for a baby's sleep."
-  "A dreamy ambient lullaby with soft synth pads, gentle chimes, and a slowly drifting melody. Designed to calm and soothe babies to sleep."
-  "A peaceful lullaby with soft wind chimes, slow harp melodies, and gentle sounds of nature like a flowing stream and rustling leaves. Calm and magical."
-  "A magical lullaby with soft bells, harps, and dreamy orchestration. Slow tempo and comforting mood, like a bedtime story set to music."
-  "A minimal lullaby with no percussion, just soft music box notes and a gentle melody. Very quiet and soothing, perfect for sleeping babies."
+"magical piano lullaby under a starlit fairy forest"
+"soft harp and gentle rain in an enchanted moon garden"
+"soothing guitar lullaby with ocean waves and glowing fireflies"
+"tender music box melody drifting through a cloud kingdom"
+"calm flute and strings under the northern lights"
+"gentle humming lullaby on a warm summer night"
+"dreamy piano melody floating over pastel skies"
+"warm cello and harp in a candlelit nursery"
+"peaceful orchestral lullaby in a blooming flower meadow"
+"soft ukulele and waves on a tropical moonlit beach"
+"slow harp and piano duet in a crystal cave"
+"gentle rain lullaby with faint chimes and firefly lights"
+"music box melody with soft heartbeats and moonlight glow"
+"floating lullaby on a paper boat under starry skies"
+"serene flute and harp in a misty mountain valley"
+"calm piano arpeggios with the sound of distant whales"
+"quiet guitar lullaby in a forest with glowing lanterns"
+"whisper-soft strings in a snowy winter wonderland"
+"magical music box in a dream-filled cloud castle"
+"slow waltz lullaby with shimmering fairy dust"
 )
 
 # Loop through prompts
@@ -19,8 +32,7 @@ for PROMPT in "${PROMPTS[@]}"; do
     echo "Generating: $PROMPT"
 
     # Run your musicgen script
-    python3 musicgen.py "$PROMPT" --length 1h 
+    python3 musicgen.py "$PROMPT" --length 30s 
 done
-
 echo "✅ All files generated in: $OUTPUT_DIR"
 
